@@ -1,4 +1,5 @@
-Q1 - #include<iostream>
+//Q1 - 
+#include<iostream>
 using namespace std;
 int solve(int a[], int lb, int ub, int key, int OccurenceDir)
 {
@@ -42,4 +43,102 @@ int main()
             cout << "Key not present" << endl;
     }
     return 0;
+}
+
+//Q2-
+#include<iostream>
+using namespace std;
+int solve(int a[], int n, int lb, int k)
+{
+    int ub = n - 1;
+    while(lb <= ub)
+    {
+        int mid = (ub + lb) / 2;
+        if(a[mid] == k)
+            return mid;
+        else if(a[mid] > k)
+            ub = mid - 1;
+        else
+            lb = mid + 1;
+    }
+    return 0;
+}
+int main()
+{
+    int t;
+    cin >> t;
+    while(t--)
+    {
+        int n;
+        cin >> n;
+        int f = 0;
+        int *a  = new int[n];
+        for(int i = 0; i < n; i++)
+            cin >> a[i];
+        for(int i = 0; i < n - 1; i++)
+        {
+            for(int j = i + 1; j < n; j++)
+            {
+                int k = a[i] + a[j];
+                int ans = solve(a, n, j + 1, k);
+                if(ans != 0)
+                {
+                    cout << i + 1 << " " << j + 1 << " " << ans + 1 << endl;
+                    f = 1;
+                    break;
+                }
+            }
+            if(f)
+                break;
+        }
+        if(!f)
+            {
+                cout << "No Sequence Found" << endl;
+                break;
+            }
+    }
+}
+
+//Q3- 
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int solve(int a[], int n, int k)
+{
+    int c = 0;
+    for(int i = 0; i < n - 1; i++)
+    {
+        int l = i + 1;
+        int h = n - 1;
+        while(l <= h)
+        {
+            int mid = (l + h) / 2;
+            if(a[mid] == a[i] + k)
+            {
+                c++;
+                break;
+            }
+            else if(a[i] + k > a[mid])
+                l = mid + 1;
+            else
+                h = mid - 1;
+        }
+    }
+    return c;
+}
+int main()
+{
+    int t, n;
+    cin >>t;
+    while(t--)
+    {
+        cin >> n;
+        int a[n];
+        for(int i = 0; i < n; i++)
+            cin >> a[i];
+        int k;
+        cin >> k;
+        sort(a, a + n);
+        cout << solve(a, n, k);
+    }
 }
